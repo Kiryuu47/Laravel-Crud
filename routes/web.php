@@ -1,8 +1,10 @@
 <?php
 
-// panggil controller Siswa
+// panggil controller
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\WaliController;
+use App\Http\Controllers\GuruController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,7 +32,16 @@ Route::resource('siswa', SiswaController::class);
 // route Pembelian
 Route::resource('pembelian', PembelianController::class);
 
-// Route Test Template
-Route::get('tes-template', function () {
-    return view('layouts.admin');
+// route Pembelian
+Route::resource('wali', WaliController::class);
+
+// Route Backend atau Admin
+Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
+    Route::get('/', function() {
+        return view('admin.index');
+    });
+    Route::resource('siswa', SiswaController::class);
+    Route::resource('pembelian', PembelianController::class);
+    Route::resource('wali', WaliController::class);
+    Route::resource('guru', GuruController::class);
 });
